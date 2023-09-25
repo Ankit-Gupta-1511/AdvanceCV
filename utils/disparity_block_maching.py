@@ -10,7 +10,7 @@ def calc_sad(left_block, right_block):
 def block_matching(imgL, imgR):
 
     # Assuming some parameters
-    window_size = 5 # for 5 x 5 window
+    window_size = 3 # for 5 x 5 window
     max_disparity = 64
 
     # Since both the images have same dimensions otherwise we would have to first modify them such that both had same dimensions
@@ -20,8 +20,6 @@ def block_matching(imgL, imgR):
     # setting disparity map buffer
     disparity_map = np.zeros_like(imgL)
 
-    print(imgL.shape)
-
     # Starting block matching
 
     # Similarity Algorithm used is SAD - Sum of Absolute Differences
@@ -30,10 +28,11 @@ def block_matching(imgL, imgR):
     # we start the iteration for a block of size (window_size x window_size) i.e (5 x 5), 
     # hence the iteration should start with half window so that top of the window and left of the window align itself with (0,0) 
     # because intiial window will be like (0,0) -> (5,5) and the exit condition will be for window (width - window_size, height - window_size) -> (width, height)
+    i = 0
     for y in range(half_window, height - half_window):
-        print("Starting with a new row...")
         for x in range(half_window, width - half_window):
-            print("Starting matching in the row...")
+            i = i + 1
+            print("Iteration - " + str(i))
             disparity = 0
 
             # Initially defining the optimium SAD cost to infinity and later on we will store the least SAD cost
@@ -48,10 +47,10 @@ def block_matching(imgL, imgR):
             # this will be a 2d array of pixels of size (window_size, window_size) in the left image that will be matched in the right image
             left_img_block = imgL[min_y : max_y + 1, min_x : max_x + 1]
 
-            for d in range(max_disparity):
+            for d in range(-half_window, half_window + 1):
 
                 # Remove the iterations that will have negative indices
-                if (x - half_window) - d < 0:
+                if min_x - d < 0 or max_x - d >= width:
                     continue
 
                 # this will be a 2d array of pixels of size (window_size, window_size) in the right image
@@ -62,7 +61,6 @@ def block_matching(imgL, imgR):
                 if sad_cost < optimum_cost:
                     optimum_cost = sad_cost
                     disparity = d
-                    print("Found a better match...")
 
             disparity_map[y, x] = disparity
 

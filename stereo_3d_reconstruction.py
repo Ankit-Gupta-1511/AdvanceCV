@@ -35,18 +35,17 @@ def compute_disparity(imgL, imgR, type="block"):
 def disparity_to_depth(disparity, baseline, focal_length):
     # Avoid division by zero when disparity = 0
     depth = focal_length * baseline / (disparity + 0.00001)
-    print(disparity)
     return depth
 
 def main():
 
-    downscale_factor = 16
+    downscale_factor = 1
     # Load the images
     imgL = cv2.imread("Data/bikeL.png", cv2.IMREAD_GRAYSCALE)
     imgR = cv2.imread("Data/bikeR.png", cv2.IMREAD_GRAYSCALE)
 
     # downscaling image for faster processing
-    downscale_shape = (int(imgL.shape[0] / downscale_factor), int(imgL.shape[1] / downscale_factor))
+    downscale_shape = (int(imgL.shape[1] / downscale_factor), int(imgL.shape[0] / downscale_factor))
     imgL = cv2.resize(imgL, downscale_shape, interpolation=cv2.INTER_AREA)
     imgR = cv2.resize(imgR, downscale_shape, interpolation=cv2.INTER_AREA)
 

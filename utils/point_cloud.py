@@ -4,10 +4,14 @@ import matplotlib.pyplot as plt
 # backprojecting x and y through u, v projection from 3d to 2d.
 # u = fx/z + u0 => x = (u - u0) * z / f
 # v = fy/z + v0 => y = (v - v0) * z / f
+# K = [
+#        f 0 u0
+#        0 f v0
+#        0 0 1
+#     ]
 def project_to_3d(x, y, depth, K):
     X = (x - K[0][2]) * depth / K[0][0]
     Y = (y - K[1][2]) * depth / K[1][1]
-    print(depth)
     return [X, Y, depth]
 
 
@@ -32,10 +36,11 @@ def visualize_point_cloud(points, colors=None):
     if colors is not None:
         ax.scatter(xs, ys, zs, c=colors)
     else:
-        ax.scatter(xs, ys, zs)
+        ax.scatter(xs, ys, zs, c=zs, cmap='jet', s=0.1)
 
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
+
     plt.savefig('point_cloud.png')
     # plt.show()
