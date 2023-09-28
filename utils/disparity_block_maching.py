@@ -10,8 +10,7 @@ def calc_sad(left_block, right_block):
 def block_matching(imgL, imgR):
 
     # Assuming some parameters
-    window_size = 3 # for 5 x 5 window
-    max_disparity = 64
+    window_size = 5 # for 5 x 5 window
 
     # Since both the images have same dimensions otherwise we would have to first modify them such that both had same dimensions
     height, width = imgL.shape 

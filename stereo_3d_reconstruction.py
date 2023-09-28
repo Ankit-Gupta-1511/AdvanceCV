@@ -39,7 +39,7 @@ def disparity_to_depth(disparity, baseline, focal_length):
 
 def main():
 
-    downscale_factor = 16
+    downscale_factor = 4
     # Load the images
     imgL = cv2.imread("Data/bikeL.png", cv2.IMREAD_GRAYSCALE)
     imgR = cv2.imread("Data/bikeR.png", cv2.IMREAD_GRAYSCALE)
@@ -68,7 +68,8 @@ def main():
     # Convert disparity to depth
     focal_length = K1[0, 0]  # Since fx = fy = 5299.313 in the given data, hence using fx as focal length
     depth_map = disparity_to_depth(disparity_map, baseline, focal_length)
-    cv2.imwrite((algo_type + "_Depth.png"), depth_map)  # Normalize for visualization
+    depth_map_normalized = cv2.normalize(depth_map, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+    cv2.imwrite((algo_type + "_Depth.png"), depth_map_normalized)  # Normalize for visualization
 
     # Step 3
     # 3d point cloud representation
