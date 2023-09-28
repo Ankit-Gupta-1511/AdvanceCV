@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import open3d as o3d
 
 # backprojecting x and y through u, v projection from 3d to 2d.

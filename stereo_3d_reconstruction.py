@@ -39,7 +39,7 @@ def disparity_to_depth(disparity, baseline, focal_length):
 
 def main():
 
-    downscale_factor = 4
+    downscale_factor = 1
     # Load the images
     imgL = cv2.imread("Data/bikeL.png", cv2.IMREAD_GRAYSCALE)
     imgR = cv2.imread("Data/bikeR.png", cv2.IMREAD_GRAYSCALE)
