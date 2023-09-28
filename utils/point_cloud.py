@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-
+import open3d as o3d
 
 # backprojecting x and y through u, v projection from 3d to 2d.
 # u = fx/z + u0 => x = (u - u0) * z / f
@@ -26,21 +26,7 @@ def get_point_Cloud(depth_map, img, K):
 
 
 def visualize_point_cloud(points, colors=None):
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-
-    xs = [point[0] for point in points]
-    ys = [point[1] for point in points]
-    zs = [point[2] for point in points]
-
-    if colors is not None:
-        ax.scatter(xs, ys, zs, c=colors)
-    else:
-        ax.scatter(xs, ys, zs, c=zs, cmap='jet', s=0.1)
-
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
-    ax.set_zlabel('Z')
-
-    plt.savefig('point_cloud.png')
-    # plt.show()
+    point_cloud = o3d.geometry.PointCloud()
+    point_cloud.points = o3d.utility.Vector3dVector(points)
+    o3d.visualization.draw_geometries([point_cloud])
+    o3d.io.write_point_cloud("point_cloud.ply", point_cloud)
